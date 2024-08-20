@@ -489,7 +489,7 @@ fn generate_checksum(runlings: Vec<Runling>, account: Account, handle: usize) ->
     );
     starcode::encrypt(starcode::compress(data))
 }
-fn derive_handle(checksum: String, runlings: &Vec<Runling>, account: &Account) -> usize {
+fn derive_handle(checksum: String, runlings: &Vec<Runling>) -> usize {
     let mut data = starcode::uncompress(starcode::decrypt(checksum));
     let runling_checksums = get_int(&mut data, 98000000);
     let handle_sum = runling_checksums - runlings.iter().map(|r| r.checksum(0)).sum::<usize>();
@@ -498,23 +498,27 @@ fn derive_handle(checksum: String, runlings: &Vec<Runling>, account: &Account) -
 }
 
 fn main() {
-    let runlings = vec!["/Uni.I^uVUgUsr::M3I~IeI0", " WiU`iOdM(P8V[f5AV6#8t.Z"]
+    let unit_slots = vec!["/Uni.I^uVUgUsr::M3I~IeI0", " WiU`iOdM(P8V[f5AV6#8t.Z"];
+    let account_info = "Y0ku2ug;{@YV?C_nvt5h]wu6|J[!N5]IN3u]daAk|F4Vy1lzU{DOusrg[yYSIP9CV4uV";
+    let account_camera = "[)vvF5";
+
+    let runlings = unit_slots
         .into_iter()
         .map(|r| r.to_string())
         .map(|r| Runling::from_data(r))
         .collect::<Vec<_>>();
 
-    let mut account = Account::from_data(
-        "Y0ku2ug;{@YV?C_nvt5h]wu6|J[!N5]IN3u]daAk|F4Vy1lzU{DOusrg[yYSIP9CV4uV".to_string(),
-    );
+    let mut account = Account::from_data(account_info.to_string());
 
-    let handle = derive_handle("[)vvF5".to_string(), &runlings, &account);
+    let handle = derive_handle(account_camera.to_string(), &runlings);
 
+    // Modify your account data here
     account.total_score = 50000;
 
     let account_str = account.to_data();
 
     let checksum = generate_checksum(runlings, account, handle);
 
-    dbg!(handle, account_str, checksum);
+    println!("New account info:   {account_str}");
+    println!("New account camera: {checksum}");
 }
