@@ -1,0 +1,9 @@
+{
+    "[rust]": {
+        "editor.defaultFormatter": "rust-lang.rust-analyzer", // Makes the magic
+        "editor.formatOnSave": true // Optional
+    },
+    "html.validate.styles": false,
+    "html.validate.scripts": false,
+    "nixEnvSelector.nixFile": "${workspaceFolder}/shell.nix"
+}
