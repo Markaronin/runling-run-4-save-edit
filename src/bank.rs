@@ -38,7 +38,6 @@ fn compute_signature(player_handle: usize, mut sections: Vec<Section>) -> String
     for mut section in sections {
         hasher.update(section.name);
         section.keys.sort_by(|a, b| a.name.cmp(&b.name));
-        dbg!(&section.keys);
         for key in section.keys {
             hasher.update(key.name);
             hasher.update("Value");
