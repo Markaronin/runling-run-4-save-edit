@@ -320,6 +320,23 @@ pub struct Runling {
     pub remaining_points: usize,
 }
 impl Runling {
+    pub fn experience_from_level(level: usize) -> usize {
+        assert!(level > 0, "Runlings with a level < 1 cannot exist");
+        let mut total_experience = 0;
+        let mut first_derivative = 2;
+        let mut second_derivative = 2;
+        let third_derivative = 1;
+        for i in 2..=level {
+            total_experience += first_derivative;
+            first_derivative += second_derivative;
+            second_derivative += third_derivative;
+            if i == 6 {
+                second_derivative += 1;
+            }
+        }
+        total_experience
+    }
+
     pub fn from_data(data: String) -> Self {
         let data = starcode::decrypt(data);
         let mut decompressed_string = starcode::uncompress(data);
@@ -430,6 +447,21 @@ mod test {
 
         assert_eq!(decoded_runling, runling);
         assert_eq!(runling.to_data(), encoded_runling);
+    }
+
+    #[test]
+    fn experience_from_level() {
+        assert_eq!(Runling::experience_from_level(1), 0);
+        assert_eq!(Runling::experience_from_level(2), 2);
+        assert_eq!(Runling::experience_from_level(3), 6);
+        assert_eq!(Runling::experience_from_level(4), 13);
+        assert_eq!(Runling::experience_from_level(5), 24);
+        assert_eq!(Runling::experience_from_level(6), 40);
+        assert_eq!(Runling::experience_from_level(7), 62);
+        assert_eq!(Runling::experience_from_level(8), 92);
+        assert_eq!(Runling::experience_from_level(9), 131);
+        assert_eq!(Runling::experience_from_level(10), 180);
+        assert_eq!(Runling::experience_from_level(16), 740);
     }
 
     #[test]

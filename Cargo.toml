@@ -7,6 +7,7 @@ edition = "2021"
 
 [dependencies]
 base16ct = { version = "0.2.0", features = ["alloc"] }
+clap = { version = "4.5.16", features = ["derive"] }
 num = "0.4.3"
 quick-xml = { version = "0.36.1", features = ["serialize"] }
 serde = { version = "1.0.209", features = ["derive"] }
